@@ -281,7 +281,7 @@ public static void myProfile() throws Exception {
     WebElement postlinkele =driver.findElement(By.id("publisherAttachTextPost ") );
     clickElement(postlinkele,"post","text" );
     Thread.sleep(2000);
-    
+    //stuck here badly
    // WebElement postlinkFrameele =driver.findElement(By.xpath("/html/body/div[1]/div[2]/table/tbody/tr/td/div/div[3]/div[1]/div/div[1]/div/div[2]/ul/li[1]/div/div/div[1]/div[1]/div[1]/div[1]/div/div[2]/div[2]/div/div/iframe")  );
 	  //driver.switchTo().frame("cke_wysiwyg_frame cke_reset");
     //driver.switchTo().frame(postlinkFrameele);
