@@ -14,8 +14,8 @@
 
   <Loggers>
 	<Root level="debug">
-  	<AppenderRef ref="FILEOUT" level="info"/>
-  	<AppenderRef ref="STDOUT" level="info"/>
+  	<AppenderRef ref="FILEOUT" level="debug"/>
+  	<AppenderRef ref="STDOUT" level="debug"/>
 	</Root>
   </Loggers>
 </Configuration>

@@ -5,10 +5,9 @@
     <classes>
       <class name="com.automation.tests.scripts.SalesforceAutomationScripts">
         <methods>
-          <include name="Validate_LoginErrorMessage"/>
-          <include name="userMenuDropDown"/>
-          <include name="loginError_noPassword"/>
-          <include name="myProfile"/>
+          <include name="setUpBeforeTestMethod"/>
+          <include name="tearDownAfterTestMethod"/>
+          <include name="remember_me"/>
         </methods>
       </class> <!-- com.automation.tests.scripts.SalesforceAutomationScripts -->
     </classes>

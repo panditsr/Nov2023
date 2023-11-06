@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="SalesforceSuite">
+<listeners>
+
+<listener class-name ="com.automation.tests.utilities.TestEventListenersUtility"/>
+
+</listeners>
   <test  name="My Testchrome">
   <parameter name ="browsername" value = "chrome"/>
     <parameter name ="version" value = "118"/>

@@ -1,6 +1,9 @@
 package com.automation.tests.scripts;
+import java.io.File;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 import java.util.ArrayList;
 
@@ -8,6 +11,8 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotInteractableException;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -20,15 +25,54 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.BeforeTest;
+
+import com.automation.tests.utilities.Log4jUtility;
+import com.automation.tests.utilities.PropertiesUtility;
+import com.google.common.io.Files;
+
 //import com.automation.tests.utilities.ExtentReportsUtility;
 //import com.automation.tests.utilities.Log4Jutility;
 
 public class BaseTest {
 		
 	static WebDriver driver=null;
-	static WebDriverWait wait=null;
+	static WebDriverWait wait=null;	
+	protected Log4jUtility logObject = Log4jUtility.getInstance();
+	static protected Logger MyLog;
 	
+	@BeforeTest
+	public void setupBeforeTest() {
+		MyLog=logObject.getLogger();
+	}
+		
+	@BeforeMethod
+	@Parameters("browsername")
+	public static void setUpBeforeTestMethod(@Optional("firefox") String browser_name) {
+		PropertiesUtility pro=new PropertiesUtility();
+		Properties applicationProFile = pro.loadFile("applicationDataProperties");
+		String url = applicationProFile.getProperty("url");
+		launchBrowser("browser_name");
+		maximiseBroser();
+		goTourl("url");
+	}
+	@AfterMethod
+	public void tearDownAfterTestMethod() {
+		closeBrowser();
+		MyLog.info("******login_to_salesforce automation script ended***********");
+		
+		
+		}
 
+	@Parameters("browsername")
+	
+	
+	
+	
 	
 	
 	public static void launchBrowser(String browserName) {
@@ -39,22 +83,25 @@ public class BaseTest {
 		case "chrome":driver=new ChromeDriver();
 						System.out.println("chrome browser launched");
 						break;
-		default: System.out.println("you have not entrered the correct browser");}
+		default: MyLog.error("you have not entrered the correct browser");}
 		
 }
 		
 public static void goTourl(String url) {
 	driver.get(url);
-	System.out.println(url + "is entered");
+	MyLog.info(url + "is entered");
 }
 public static void maximiseBroser() {
 	driver.manage().window().maximize();
-	System.out.println("Browser window has maximized");
+	MyLog.info("Browser window has maximized");
 }
+
+public static void refreshPage() {
+	driver.navigate().refresh();}
 
 public static String getTextFromElement(WebElement ele,String objectName) {
 	String data=ele.getText();
-	System.out.println("extracted the text from"+ objectName);
+	MyLog.info("extracted the text from"+ objectName);
 	return data;
 	/*if(actual.equals(expected))
 		System.out.println("testcase passed");
@@ -70,24 +117,26 @@ public static void closeBrowser() {
 public void quitBrowser() {
 	driver.quit();
 }
+
+
 public static void enterText(WebElement ele,String data,String objectName) {
 
 if(ele.isDisplayed()) {
 	 ele.clear();
 	 ele.sendKeys(data);
-	 System.out.println("Username is entered in the username field" + objectName);}
+	 MyLog.info("Username is entered in the username field" + objectName);}
 else {
-	 System.out.println("username element is not displayed");
+	MyLog.info("username element is not displayed");
 }
 }
 public static void clickElement(WebElement ele,String data,String objectName) {
  if(ele.isEnabled()){
 	 ele.click();
-	 System.out.println("Button is clicked");
+	 MyLog.info("Button is clicked");
 	 
  }
  else {
-	 System.out.println("Button element  is not enabled");
+	 MyLog.info("Button element  is not enabled");
 	              
  }
 	
@@ -104,7 +153,7 @@ public static void clickElement(WebElement ele,String data,String objectName) {
 		.ignoring(ElementNotInteractableException.class);
 			
 		wait.until(ExpectedConditions.visibilityOf(ele));
-		System.out.println(objectName+" is waited for visibility using fluent wait");}
+		MyLog.info(objectName+" is waited for visibility using fluent wait");}
 	
 	public static void waitForVisibility(WebElement ele,int time,String objectName) {
 		wait=new WebDriverWait(driver,Duration.ofSeconds(time));
@@ -118,13 +167,33 @@ public static void clickElement(WebElement ele,String data,String objectName) {
 		select.selectByVisibleText(text);
 		List<WebElement> list=select.getOptions();
 		for(WebElement ele1:list)	{
-			System.out.println (ele1.getText());
+			MyLog.info (ele1.getText());
 		}}
 	}
 		public static void SelectfromDropDown(WebElement ele, int index) {
 			Select select=new Select(ele);
 			select.selectByIndex(index);;
 		}
+		public static void selectelementbyTextdata(WebElement ele,String text) {
+			
+			Select select=new Select(ele);
+			select.selectByVisibleText(text);
+			MyLog.info("selected" + text);
+			
+			
+		}
+        public static void selectelementbyIndexdata(WebElement ele,int index) {
+			
+			Select select=new Select(ele);
+			select.selectByIndex(index);;
+			MyLog.info("selected with index" + index);
+        }
+ public static void selectelementbyValuedata(WebElement ele,String text) {
+			
+			Select select=new Select(ele);
+			select.selectByValue(text);
+			MyLog.info("selected with value" + text);
+        }
 		public static void switchFrame(WebElement ele, String ObjectName) {
 			if(ele.isDisplayed()) {
 				driver.switchTo().frame(ele);
@@ -163,8 +232,8 @@ public static void clickElement(WebElement ele,String data,String objectName) {
  			System.out.println("text is extracted from alert box");
  			loginerrorAlert.accept();
  			
- 			if(actual.equals(expected))
- 				System.out.println("testcase passed");
+ 			if(actual.equals(expected)) {
+ 				System.out.println("testcase passed");}
  			else {
  				System.out.println("testcase failed");
  			}                                            // Print Alert Message
@@ -205,8 +274,24 @@ public static void clickElement(WebElement ele,String data,String objectName) {
  		if(!rememberme.isSelected())
  		{
  			rememberme.click();
+ 		}}
+ 		public static void	takescreenshot(WebDriver driver,String filepath	)throws IOException	 {
+ 			TakesScreenshot screencapture=( TakesScreenshot)driver;
+ 		     File src= screencapture.getScreenshotAs(OutputType.FILE);
+ 		    // String imagepath=System.getProperty("user+dir")+"/results/screencapture/image1.png";
+ 		     File distination=new File(filepath);
+ 		     Files.copy(src,distination);}
+ 		
+ 		public static void	takescreenshotofelement(WebElement element,String filepath	)throws IOException	 {
+ 		     
+ 		     File src1= element.getScreenshotAs(OutputType.FILE);
+ 		    // String imagepath1=System.getProperty("user+dir")+"/results/screencapture/image1.png";
+ 		     File distination1=new File(filepath);
+ 		     Files.copy(src1, distination1);
+ 		     
  		}
- 		}
+ 		
+ 		
  		
  		
 

@@ -4,11 +4,12 @@ package com.automation.tests.utilities;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.tests.automation.FirstScript;
+
 
 
 public class Log4jUtility {
-	static Logger Logger=LogManager.getLogger(Log4jUtility.class.getName());
+	
+	//static Logger Logger=LogManager.getLogger(Log4jUtility.class.getName());
 	private Logger log=null;
 	private static Log4jUtility ob=null;
 	
@@ -30,6 +31,22 @@ public class Log4jUtility {
 		
 		return log;
 	}
-  
+	
+	public void ioginfoText(String data) {
+		log.info(data);
+	}
+	public void iogErrorText(String data) {
+		log.error(data);
+	}
+	public void iogDebugText(String data) {
+		log.debug(data);
+	}
+	public void iogwarnText(String data) {
+		log.warn(data);
+	}
+	public void iogFatalText(String data) {
+		log.fatal(data);
+	}
+	
 	
 }

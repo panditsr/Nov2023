@@ -1,5 +1,8 @@
 package com.automation.tests.scripts;
 
+import java.util.Properties;
+
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -14,87 +17,94 @@ import com.automation.tests.utilities.PropertiesUtility;
 
 public class SalesforceAutomationScripts  extends BaseTest
 {
-	@BeforeMethod
+	/*@BeforeMethod
 	public void setUpMethod() {
 		System.out.println("inside before automation");}
 	@AfterMethod
 	public void tearDownMethod() {
 		System.out.println("inside after method");}
 
-	@Parameters({"browsername","version"})
+	@Parameters({"browsername","version"})*/
+	
 	@Test
 	public static void loginError_noPassword() throws InterruptedException {
 		
 	String expected="Please enter your password";
-	launchBrowser("firefox");
-	maximiseBroser();
-	goTourl("https://login.salesforce.com");
-	//PropertiesUtility pro=new PropertiesUtility();
-	//Properties p=pro.createPropertyObject();
-	//pro.loadFile("applicationDataProperties",p);
-	//String username=pro.getPropertyValue("login.valid.userid",p);
-	//String password=pro.getPropertyValue("login.valid.password",p);
+	
+	PropertiesUtility pro=new PropertiesUtility();
+	Properties appPro= pro.loadFile("applicationDataProperties");
+	String username=appPro.getProperty("login.valid.userid");
+	String password=appPro.getProperty("login.valid.password");
+	
 	WebElement usernameEle = driver.findElement(By.name("username"));
 	waitForVisibility(usernameEle, 5, 2, "username textbox");
-	enterText(usernameEle,"shantala.p@bluesky.com","username textbox");
+	enterText(usernameEle,username,"username textbox");
 	//WebElement passwordEle =driver.findElement(By.id("password"));
 	//passwordEle.clear();
 	WebElement login=driver.findElement(By.id("Login"));
     clickElement(login,"login button","c" );
-    Thread.sleep(5000);
-    WebElement alert=driver.findElement(By.id("error"));
+    
+    WebElement alertele =driver.findElement(By.id("error"));
+    waitForVisibility(alertele,5 ,"alert");
+    //Alert loginerrorAlert=driver.switchTo().alert();//switch to alert
+   
+	//String actual=loginerrorAlert.getText(); // capture alert message
+  
 	alert(driver,expected);
+	
 	//Assert.assertEquals(actual,expected);//hard assertion
 	//sa.assertEquals(actual,expected);
-	//sa.assertAll();
+	//sa.assertAll();	
 
 	System.out.println("Please enter your password.");
-	closeBrowser();
+	
     
     
 	}
-	@Parameters("browsername")
+	
 	@Test
 public static void valid_Username_Password() throws InterruptedException {
 		
-		String Expectedtext="Home Page ~ Salesforce - Developer Edition";
-	launchBrowser("firefox");
-	maximiseBroser();
-	goTourl("https://login.salesforce.com");
+		String Expected="Home Page ~ Salesforce - Developer Edition";
+	
+		PropertiesUtility pro=new PropertiesUtility();
+		Properties appPro= pro.loadFile("applicationDataProperties");
+		String username=appPro.getProperty("login.valid.userid");
+		String password=appPro.getProperty("login.valid.password");	
+		
 	WebElement usernameEle = driver.findElement(By.name("username"));
 	waitForVisibility(usernameEle, 5, 2, "username textbox");
-	enterText(usernameEle,"shantala.p@bluesky.com","username textbox");
+	enterText(usernameEle,username,"username textbox");
 	WebElement passwordEle =driver.findElement(By.id("password"));
 	//passwordEle.clear();
-	enterText(passwordEle,"greengrass13","password textbox");
+	enterText(passwordEle,password,"password textbox");
 	WebElement login=driver.findElement(By.id("Login"));
     clickElement(login,"login button","c" );
     Thread.sleep(5000);
     String actual=driver.getTitle();
-    if(actual.equalsIgnoreCase(Expectedtext))   //injavascript so findElement not possible
-   	 {
-   		 System.out.println("Test passed-Home page is displayed");
-   	 }
-   else {
-     
-   	 System.out.println("Test failed");}
-    closeBrowser();
+    Assert.assertEquals(actual,Expected,"fail:valid login to salesforce");//hard assertion
+   
+   
     }
 	
-	@Parameters("browsername")
+	
     @Test
 public static void remember_me() throws InterruptedException {
 	
-	   String Expectedtext="Home Page ~ Salesforce - Developer Edition";
-		launchBrowser("firefox");
-		maximiseBroser();
-		goTourl("https://login.salesforce.com");
+	   String Expected="Home Page ~ Salesforce - Developer Edition";
+		
+	   PropertiesUtility pro=new PropertiesUtility();
+		Properties appPro= pro.loadFile("applicationDataProperties");
+		String username=appPro.getProperty("login.valid.userid");
+		String password=appPro.getProperty("login.valid.password");	
+		
+	   
 		WebElement usernameEle = driver.findElement(By.name("username"));
 		waitForVisibility(usernameEle, 5, 2, "username textbox");
-		enterText(usernameEle,"shantala.p@bluesky.com","username textbox");
+		enterText(usernameEle,username,"username textbox");
 		WebElement passwordEle =driver.findElement(By.id("password"));
 		//passwordEle.clear();
-		enterText(passwordEle,"greengrass13","password textbox");
+		enterText(passwordEle,password,"password textbox");
 		WebElement rememberme =driver.findElement(By.xpath("/html/body/div[1]/div[1]/div/div/div[2]/div[3]/form/div[3]/label"));
 		if(!rememberme.isSelected())
 		{
@@ -106,14 +116,8 @@ public static void remember_me() throws InterruptedException {
 	    clickElement(login,"login button","c" );
 	    Thread.sleep(5000);
 	    String actual=driver.getTitle();
-	    if(actual.equalsIgnoreCase(Expectedtext))   //injavascript so findElement not possible
-	   	 {
-	   		 System.out.println("Home page is displayed");
-	   	 }
-	   else {
-	     
-	   	 System.out.println("Test failed");
-	   	 }
+	    Assert.assertEquals(actual,Expected,"fail:test case");//hard assert
+	   
 	    
 	    WebElement usermenushantala =driver.findElement(By.id("userNavButton"));
 	    clickElement(usermenushantala,"usermenushantala button","shantala" );
@@ -123,25 +127,22 @@ public static void remember_me() throws InterruptedException {
 	    
 	   //SelectfromDropDown("usermenushantala", int 4);
 	    
-	    //closeBrowser();
+	    
 	    }
 	
 	
-	@Parameters("browsername")	
+	
 @Test
 public static void forgot_Password() throws InterruptedException {
 	
 	String expected="Forgot Your Password";	
-	launchBrowser("firefox");
-	maximiseBroser();
-	goTourl("https://login.salesforce.com");
-	//WebElement usernameEle = driver.findElement(By.name("username"));
-	//waitForVisibility(usernameEle, 5, 2, "username textbox");
-	//enterText(usernameEle,"shantala.p@bluesky.com","username textbox");
-	//WebElement passwordEle =driver.findElement(By.id("password"));
-	//passwordEle.clear();
-	//WebElement login=driver.findElement(By.id("Login"));
-    //clickElement(login,"login button","c" );
+	
+
+	   PropertiesUtility pro=new PropertiesUtility();
+		Properties appPro= pro.loadFile("applicationDataProperties");
+		String username=appPro.getProperty("login.valid.userid");
+		String password=appPro.getProperty("login.valid.password");	
+		
     WebElement forgotPassword=driver.findElement(By.xpath("//*[@id=\"forgot_password_link\"]"));
     clickElement(forgotPassword,"Forgot Your Password? button","click" );
     WebElement forgottextele=driver.findElement(By.xpath("//*[@id=\"header\"]"));
@@ -165,20 +166,24 @@ public static void forgot_Password() throws InterruptedException {
 	}
 	
 	
-	@Parameters("browsername")
+	
 @Test
 public static void Validate_LoginErrorMessage() throws InterruptedException{
 	 String expected="Please check your username and password. If you still can't log in, contact your Salesforce administrator.";	
-	launchBrowser("firefox");
-	maximiseBroser();
-	goTourl("https://login.salesforce.com");
+	
+
+	   PropertiesUtility pro=new PropertiesUtility();
+		Properties appPro= pro.loadFile("applicationDataProperties");
+		String username=appPro.getProperty("login.invalid.userid");
+		String password=appPro.getProperty("login.invalid.password");	
+		
 	WebElement usernameEle = driver.findElement(By.name("username"));
 	waitForVisibility(usernameEle, 5, 2, "username textbox");
-	enterText(usernameEle,"123","username textbox");
+	enterText(usernameEle,username,"username textbox");
 	WebElement passwordEle =driver.findElement(By.id("password"));
 	//passwordEle.clear();
 	Thread.sleep(5000);
-	enterText(passwordEle,"22131","password textbox");
+	enterText(passwordEle,password,"password textbox");
 	WebElement login=driver.findElement(By.id("Login"));
    clickElement(login,"login button","c" );
    Thread.sleep(5000);
@@ -186,33 +191,31 @@ public static void Validate_LoginErrorMessage() throws InterruptedException{
    Thread.sleep(5000);
    alert(driver,expected);
    Thread.sleep(5000);
-	closeBrowser();
+	
 }
-	@Parameters("browsername")
+	
     @Test
 public static void userMenuDropDown() throws Exception {
-	//String Expectedtext="Home Page ~ Salesforce - Developer Edition";
-	launchBrowser("firefox");
-	maximiseBroser();
-	goTourl("https://login.salesforce.com");
+	String Expected="Home Page ~ Salesforce - Developer Edition";
+	
+
+	   PropertiesUtility pro=new PropertiesUtility();
+		Properties appPro= pro.loadFile("applicationDataProperties");
+		String username=appPro.getProperty("login.valid.userid");
+		String password=appPro.getProperty("login.valid.password");	
+		
 	WebElement usernameEle = driver.findElement(By.name("username"));
 	waitForVisibility(usernameEle, 5, 2, "username textbox");
-	enterText(usernameEle,"shantala.p@bluesky.com","username textbox");
+	enterText(usernameEle,username,"username textbox");
 	WebElement passwordEle =driver.findElement(By.id("password"));
-	enterText(passwordEle,"greengrass13","password textbox");	
+	enterText(passwordEle,password,"password textbox");	
 	Thread.sleep(5000);	
 	WebElement login=driver.findElement(By.id("Login"));
     clickElement(login,"login button","c" );
     Thread.sleep(5000);
-   /* String actual=driver.getTitle();
-    if(actual.equalsIgnoreCase(Expectedtext))   //injavascript so findElement not possible for title
-   	 {
-   		 System.out.println("Home page is displayed");
-   	 }
-   else {
-     
-   	 System.out.println("Test failed");
-   	 }*/
+    String actual=driver.getTitle();
+    Assert.assertEquals(actual,Expected,"fail:test case");//hard assert
+    
     
     WebElement usermenushantala =driver.findElement(By.id("userNavButton"));
     clickElement(usermenushantala,"usermenushantala button","shantala" );
@@ -229,14 +232,18 @@ public static void userMenuDropDown() throws Exception {
     @Test
 public static void myProfile() throws Exception {
 	
-	launchBrowser("firefox");
-	maximiseBroser();
-	goTourl("https://login.salesforce.com");
+
+		   PropertiesUtility pro=new PropertiesUtility();
+			Properties appPro= pro.loadFile("applicationDataProperties");
+			String username=appPro.getProperty("login.valid.userid");
+			String password=appPro.getProperty("login.valid.password");	
+			
+	
 	WebElement usernameEle = driver.findElement(By.name("username"));
 	waitForVisibility(usernameEle, 5, 2, "username textbox");
-	enterText(usernameEle,"shantala.p@bluesky.com","username textbox");
+	enterText(usernameEle,username,"username textbox");
 	WebElement passwordEle =driver.findElement(By.id("password"));
-	enterText(passwordEle,"greengrass13","password textbox");	
+	enterText(passwordEle,password,"password textbox");	
 	Thread.sleep(5000);	
 	WebElement login=driver.findElement(By.id("Login"));
     clickElement(login,"login button","c" );

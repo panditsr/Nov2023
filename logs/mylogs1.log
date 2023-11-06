@@ -186,3 +186,5 @@
 20231029 23:48:54 DEBUG [AsyncHttpClient-1-2] util.Recycler Recycler.java99 - -Dio.netty.recycler.blocking: false
 20231029 23:48:54 DEBUG [AsyncHttpClient-1-2] util.Recycler Recycler.java100 - -Dio.netty.recycler.batchFastThreadLocalOnly: true
 20231029 23:49:25 DEBUG [AsyncHttpClient-1-2] compression.Brotli Brotli.java38 - brotli4j not in the classpath; Brotli support will be unavailable.
+20231105 18:07:09 ERROR [main] scripts.BaseTest BaseTest.java86 - you have not entrered the correct browser
+20231105 18:07:11 ERROR [main] scripts.BaseTest BaseTest.java86 - you have not entrered the correct browser
