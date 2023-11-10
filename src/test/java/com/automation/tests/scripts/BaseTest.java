@@ -1,5 +1,6 @@
 package com.automation.tests.scripts;
 import java.io.File;
+
 import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
@@ -35,8 +36,8 @@ import com.automation.tests.utilities.Log4jUtility;
 import com.automation.tests.utilities.PropertiesUtility;
 import com.google.common.io.Files;
 
-//import com.automation.tests.utilities.ExtentReportsUtility;
-//import com.automation.tests.utilities.Log4Jutility;
+import com.automation.tests.utilities.ExtentReportsUtility;
+import com.automation.tests.utilities.Log4jUtility;
 
 public class BaseTest {
 		
@@ -44,6 +45,7 @@ public class BaseTest {
 	static WebDriverWait wait=null;	
 	protected Log4jUtility logObject = Log4jUtility.getInstance();
 	static protected Logger MyLog;
+	protected ExtentReportsUtility report=ExtentReportsUtility.getInstance();
 	
 	@BeforeTest
 	public void setupBeforeTest() {
@@ -119,12 +121,14 @@ public void quitBrowser() {
 }
 
 
-public static void enterText(WebElement ele,String data,String objectName) {
+public  void enterText(WebElement ele,String data,String objectName) {
 
 if(ele.isDisplayed()) {
 	 ele.clear();
 	 ele.sendKeys(data);
-	 MyLog.info("Username is entered in the username field" + objectName);}
+	 MyLog.info("Username is entered in the username field" + objectName);
+	 report.logTestInfo("Pass:" +objectName+"is entered to the username field");
+	 }
 else {
 	MyLog.info("username element is not displayed");
 }
@@ -289,6 +293,35 @@ public static void clickElement(WebElement ele,String data,String objectName) {
  		     File distination1=new File(filepath);
  		     Files.copy(src1, distination1);
  		     
+ 		}
+ 		
+ 		/*public static void window() {
+ 			
+ 			//WebElement windowlink =driver.findElement(null)
+ 			//windowlink.click();
+ 			String basewindowhandle=driver.getWindowHandle();
+ 			//WebElement windowbutton =driver.findElement(null)
+ 			//windowbutton.click();
+ 			Set<String> allwindowhandle=driver.getWindowHandles();
+ 			for(String handle:allwindowhandle) {
+ 				if(!basewindowhandle.equals(handle)) {
+ 					driver.switchTo().window(handle);
+ 					break;
+ 					
+ 					//want to comeback from window then
+ 					 driver.switchTo().defaultContent(); */
+ 		
+ 		// driver.switchTo().newWindow(WindowType.WINDOW/TAB);
+ 		//driver.navigate().to("url");
+ 		//Threadsleep
+ 		//driver.quit ----to close all windows
+ 		//driver.close() ---to close the current window.
+ 					
+ 					
+ 					
+ 					
+ 				}
+ 			}
  		}
  		
  		

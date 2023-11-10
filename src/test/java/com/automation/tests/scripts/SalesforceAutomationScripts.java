@@ -1,10 +1,13 @@
 package com.automation.tests.scripts;
 
+import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.annotations.Parameters;
@@ -17,17 +20,10 @@ import com.automation.tests.utilities.PropertiesUtility;
 
 public class SalesforceAutomationScripts  extends BaseTest
 {
-	/*@BeforeMethod
-	public void setUpMethod() {
-		System.out.println("inside before automation");}
-	@AfterMethod
-	public void tearDownMethod() {
-		System.out.println("inside after method");}
-
-	@Parameters({"browsername","version"})*/
+	
 	
 	@Test
-	public static void loginError_noPassword() throws InterruptedException {
+	public  void loginError_noPassword() throws InterruptedException {
 		
 	String expected="Please enter your password";
 	
@@ -63,7 +59,7 @@ public class SalesforceAutomationScripts  extends BaseTest
 	}
 	
 	@Test
-public static void valid_Username_Password() throws InterruptedException {
+public  void valid_Username_Password() throws InterruptedException {
 		
 		String Expected="Home Page ~ Salesforce - Developer Edition";
 	
@@ -89,7 +85,7 @@ public static void valid_Username_Password() throws InterruptedException {
 	
 	
     @Test
-public static void remember_me() throws InterruptedException {
+public  void remember_me() throws InterruptedException {
 	
 	   String Expected="Home Page ~ Salesforce - Developer Edition";
 		
@@ -133,7 +129,7 @@ public static void remember_me() throws InterruptedException {
 	
 	
 @Test
-public static void forgot_Password() throws InterruptedException {
+public  void forgot_Password() throws InterruptedException {
 	
 	String expected="Forgot Your Password";	
 	
@@ -168,7 +164,7 @@ public static void forgot_Password() throws InterruptedException {
 	
 	
 @Test
-public static void Validate_LoginErrorMessage() throws InterruptedException{
+public  void Validate_LoginErrorMessage() throws InterruptedException{
 	 String expected="Please check your username and password. If you still can't log in, contact your Salesforce administrator.";	
 	
 
@@ -195,7 +191,7 @@ public static void Validate_LoginErrorMessage() throws InterruptedException{
 }
 	
     @Test
-public static void userMenuDropDown() throws Exception {
+public  void userMenuDropDown() throws Exception {
 	String Expected="Home Page ~ Salesforce - Developer Edition";
 	
 
@@ -230,7 +226,7 @@ public static void userMenuDropDown() throws Exception {
 	
 	@Parameters("browsername")
     @Test
-public static void myProfile() throws Exception {
+public  void myProfile() throws Exception {
 	
 
 		   PropertiesUtility pro=new PropertiesUtility();
@@ -315,8 +311,147 @@ public static void myProfile() throws Exception {
     
  
     }
+@Test	
+public  void mysetting() throws Exception {
+		
+	    PropertiesUtility pro=new PropertiesUtility();
+		Properties appPro= pro.loadFile("applicationDataProperties");
+		String username=appPro.getProperty("login.valid.userid");
+		String password=appPro.getProperty("login.valid.password");	
+		
+		WebElement usernameEle = driver.findElement(By.name("username"));
+		waitForVisibility(usernameEle, 5, 2, "username textbox");
+		enterText(usernameEle,username,"username textbox");
+		WebElement passwordEle =driver.findElement(By.id("password"));
+		enterText(passwordEle,password,"password textbox");	
+		Thread.sleep(5000);	
+		WebElement login=driver.findElement(By.id("Login"));
+	    clickElement(login,"login button","c" );
+	    Thread.sleep(5000);
+	    WebElement usermenushantala =driver.findElement(By.id("userNavButton"));
+	    clickElement(usermenushantala,"usermenushantala button","shantala" );
+	    Thread.sleep(5000);
+	    String dropdownchart=driver.findElement(By.xpath("//div[@id='userNavMenu']")).getText();
+	    System.out.println("dropdownchart");
+	    //SelectfromDropDown(usermenushantala, "text");
+	    Thread.sleep(5000);	
+	    
+	    WebElement mysettingele =driver.findElement(By.xpath("/html/body/div/div[1]/table/tbody/tr/td[3]/div/div[3]/div/div/div[2]/div[3]/a[2]"));
+	    Thread.sleep(1000);	
+	    
+	    clickElement(mysettingele,"mysetting","link" );
+	    Thread.sleep(1000);	
+	    
+	    WebElement personalele =driver.findElement(By.xpath("/html/body/div/div[2]/table/tbody/tr/td[1]/div/div[4]/div[2]/a"));
+	    clickElement(personalele,"mysetting","link" );
+	    Thread.sleep(1000);	
+	    
+	    WebElement loginhistory =driver.findElement(By.id("LoginHistory_font"));
+	    clickElement(loginhistory,"mysetting ","link" );
+	    Thread.sleep(1000);	
+	    
+	    WebElement downloadloginhistoryele =driver.findElement(By.xpath("/html/body/div/div[2]/table/tbody/tr/td[2]/div[3]/div[1]/div/div[2]/div/a"));
+	    clickElement(downloadloginhistoryele,"download ","link" );
+	    System.out.println("download completed");
+	    
+	    WebElement Displayandlayoutele =driver.findElement(By.xpath("//*[@id=\"DisplayAndLayout_font\"]"));
+	    clickElement(Displayandlayoutele,"display link ","layout link" );
+        Thread.sleep(1000);	
+         
+        WebElement customizetabele =driver.findElement(By.xpath("//*[@id=\"CustomizeTabs_font\"]"));
+        clickElement(customizetabele," customize tab ","tab" );
+        Thread.sleep(1000);	
+        
+        WebElement customappdropdownele=driver.findElement(By.xpath("/html/body/div/div[2]/table/tbody/tr/td[2]/form/div/div[2]/div[2]/table/tbody/tr[1]/td/label"));
+        clickElement(customappdropdownele,"app","app");
+        Thread.sleep(1000);	
+        System.out.println("customapp");
+        
+        if( customappdropdownele.isDisplayed()) {
+			System.out.println(" select drop down is displayed");
+		Select select=new Select( customappdropdownele);
+		List<WebElement> customlist= select.getOptions();
+		for(WebElement ele:customlist) {
+			System.out.println(ele.getText());
+		}
+		}
+		else {
+			System.out.println("city select drop down is not visible");
+		}
+        
+}
+@Test
+public  void developerconsol() throws Exception {
 	
+	 PropertiesUtility pro=new PropertiesUtility();
+		Properties appPro= pro.loadFile("applicationDataProperties");
+		String username=appPro.getProperty("login.valid.userid");
+		String password=appPro.getProperty("login.valid.password");	
+		
+	WebElement usernameEle = driver.findElement(By.name("username"));
+	waitForVisibility(usernameEle, 5, 2, "username textbox");
+	enterText(usernameEle,username,"username textbox");
+	WebElement passwordEle =driver.findElement(By.id("password"));
+	enterText(passwordEle,password,"password textbox");	
+	Thread.sleep(5000);	
+	WebElement login=driver.findElement(By.id("Login"));
+    clickElement(login,"login button","c" );
+    Thread.sleep(5000);
+    WebElement usermenushantala =driver.findElement(By.id("userNavButton"));
+    clickElement(usermenushantala,"usermenushantala button","shantala" );
+    Thread.sleep(5000);
+    //String dropdownchart=driver.findElement(By.xpath("//div[@id='userNavMenu']")).getText();
+    //System.out.println("dropdownchart");
+    //SelectfromDropDown(usermenushantala, "text");
+    Thread.sleep(5000);	
+  
+   
+    String basewindowhandle=driver.getWindowHandle();
+    WebElement consolewindowlinkele =driver.findElement(By.xpath("/html/body/div/div[1]/table/tbody/tr/td[3]/div/div[3]/div/div/div[2]/div[3]/a[3]"));
+    clickElement(consolewindowlinkele,"windowlink","developer consol" );
+ 			Set<String> allwindowhandle=driver.getWindowHandles();
+ 			for(String handle:allwindowhandle) {
+ 				if(!basewindowhandle.equals(handle)) {
+ 					driver.switchTo().window(handle);
+ 					break;}
+ 					System.out.println("Window is opened");
+ 					driver.switchTo().defaultContent();
+ 					driver.close();
+ 				}
+	}
+
+@Test
+public  void logout() throws Exception {
 	
+    String Expectedurl="https://tekarch-9c-dev-ed.develop.my.salesforce.com/";
+	
+    PropertiesUtility pro=new PropertiesUtility();
+	Properties appPro= pro.loadFile("applicationDataProperties");
+	String username=appPro.getProperty("login.valid.userid");
+	String password=appPro.getProperty("login.valid.password");	
+	
+	WebElement usernameEle = driver.findElement(By.name("username"));
+	waitForVisibility(usernameEle, 5, 2, "username textbox");
+	enterText(usernameEle,username,"username textbox");
+	WebElement passwordEle =driver.findElement(By.id("password"));
+	enterText(passwordEle,password,"password textbox");	
+	Thread.sleep(1000);	
+	WebElement login=driver.findElement(By.id("Login"));
+   clickElement(login,"login button","c" );
+   Thread.sleep(3000);
+   WebElement usermenushantala =driver.findElement(By.id("userNavButton"));
+   clickElement(usermenushantala,"usermenushantala button","shantala" );
+   Thread.sleep(5000);
+   //String dropdownchart=driver.findElement(By.xpath("//div[@id='userNavMenu']")).getText();
+   //System.out.println("dropdownchart");
+   //SelectfromDropDown(usermenushantala, "text");
+   WebElement logoutele =driver.findElement(By.xpath("/html/body/div/div[1]/table/tbody/tr/td[3]/div/div[3]/div/div/div[2]/div[3]/a[5]"));
+   clickElement(logoutele,"button","logout" );
+   Thread.sleep(5000);
+   String actual=driver.getCurrentUrl();
+   Assert.assertEquals(actual,Expectedurl,"fail:test case");//hard assert
+   System.out.println("passed");
+}
        
 	}
 
