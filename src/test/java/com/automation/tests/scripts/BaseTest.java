@@ -41,11 +41,11 @@ import com.automation.tests.utilities.Log4jUtility;
 
 public class BaseTest {
 		
-	static WebDriver driver=null;
-	static WebDriverWait wait=null;	
-	protected Log4jUtility logObject = Log4jUtility.getInstance();
-	static protected Logger MyLog;
-	protected ExtentReportsUtility report=ExtentReportsUtility.getInstance();
+protected	static WebDriver driver=null;
+protected	static WebDriverWait wait=null;	
+protected   Log4jUtility logObject = Log4jUtility.getInstance();
+protected	static  Logger MyLog;	
+protected   ExtentReportsUtility report=ExtentReportsUtility.getInstance();
 	
 	@BeforeTest
 	public void setupBeforeTest() {
@@ -227,6 +227,22 @@ public static void clickElement(WebElement ele,String data,String objectName) {
  				
  				
  			}
+ 		}
+ 		public void switchToAlert() {
+			Alert alert=driver.switchTo().alert();
+			System.out.println("Switch to alert");	
+			
+			}
+ 		
+ 		public void AcceptAlert(Alert alert) {
+ 			alert.accept();
+ 			System.out.println("Alert Accepted");}
+ 			
+ 			public void dismissAlert() {
+ 				Alert alert= driver.switchTo().alert();
+ 	 			alert.dismiss();
+ 	 			System.out.println("Alert Dismissed");
+ 		
  		}
  		public static void 	alert(WebDriver driver,String expected ) throws InterruptedException {
  			

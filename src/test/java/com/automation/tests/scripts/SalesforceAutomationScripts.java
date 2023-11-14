@@ -1,11 +1,13 @@
-package com.automation.tests.scripts;
+	package com.automation.tests.scripts;
 
 import java.util.List;
+
 import java.util.Properties;
 import java.util.Set;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
@@ -14,7 +16,10 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.AfterMethod;
 import org.testng.ITestListener;
+
+import com.automation.pages.login.LoginPage;
 import com.automation.tests.utilities.PropertiesUtility;
+
 
 
 
@@ -32,23 +37,14 @@ public class SalesforceAutomationScripts  extends BaseTest
 	String username=appPro.getProperty("login.valid.userid");
 	String password=appPro.getProperty("login.valid.password");
 	
-	WebElement usernameEle = driver.findElement(By.name("username"));
-	waitForVisibility(usernameEle, 5, 2, "username textbox");
-	enterText(usernameEle,username,"username textbox");
-	//WebElement passwordEle =driver.findElement(By.id("password"));
-	//passwordEle.clear();
-	WebElement login=driver.findElement(By.id("Login"));
-    clickElement(login,"login button","c" );
-    
-    WebElement alertele =driver.findElement(By.id("error"));
-    waitForVisibility(alertele,5 ,"alert");
-    //Alert loginerrorAlert=driver.switchTo().alert();//switch to alert
+	LoginPage loginpage=new LoginPage(driver);
+	loginpage.enterUserName(username);
+	//loginpage.enterPassword(password);
+	loginpage.clickButton();
+	loginpage.alertmessage();
    
-	//String actual=loginerrorAlert.getText(); // capture alert message
-  
-	alert(driver,expected);
-	
-	//Assert.assertEquals(actual,expected);//hard assertion
+	WebDriver actual=loginpage.getErrorTextMessage(); // capture alert message
+	Assert.assertEquals(actual,expected);//hard assertion
 	//sa.assertEquals(actual,expected);
 	//sa.assertAll();	
 
@@ -68,14 +64,14 @@ public  void valid_Username_Password() throws InterruptedException {
 		String username=appPro.getProperty("login.valid.userid");
 		String password=appPro.getProperty("login.valid.password");	
 		
-	WebElement usernameEle = driver.findElement(By.name("username"));
-	waitForVisibility(usernameEle, 5, 2, "username textbox");
-	enterText(usernameEle,username,"username textbox");
-	WebElement passwordEle =driver.findElement(By.id("password"));
-	//passwordEle.clear();
-	enterText(passwordEle,password,"password textbox");
-	WebElement login=driver.findElement(By.id("Login"));
-    clickElement(login,"login button","c" );
+		
+		LoginPage loginpage=new LoginPage(driver);
+		loginpage.enterUserName(username);
+		loginpage.enterPassword(password);
+		loginpage.clickButton();
+		
+		
+	
     Thread.sleep(5000);
     String actual=driver.getTitle();
     Assert.assertEquals(actual,Expected,"fail:valid login to salesforce");//hard assertion
@@ -94,13 +90,12 @@ public  void remember_me() throws InterruptedException {
 		String username=appPro.getProperty("login.valid.userid");
 		String password=appPro.getProperty("login.valid.password");	
 		
+		LoginPage loginpage=new LoginPage(driver);
+		loginpage.enterUserName(username);
+		loginpage.enterPassword(password);
+		loginpage.clickButton();
 	   
-		WebElement usernameEle = driver.findElement(By.name("username"));
-		waitForVisibility(usernameEle, 5, 2, "username textbox");
-		enterText(usernameEle,username,"username textbox");
-		WebElement passwordEle =driver.findElement(By.id("password"));
-		//passwordEle.clear();
-		enterText(passwordEle,password,"password textbox");
+		
 		WebElement rememberme =driver.findElement(By.xpath("/html/body/div[1]/div[1]/div/div/div[2]/div[3]/form/div[3]/label"));
 		if(!rememberme.isSelected())
 		{
@@ -108,8 +103,7 @@ public  void remember_me() throws InterruptedException {
 			}
 		Thread.sleep(5000);
 		//select_Checkbox("string","string");	
-		WebElement login=driver.findElement(By.id("Login"));
-	    clickElement(login,"login button","c" );
+		
 	    Thread.sleep(5000);
 	    String actual=driver.getTitle();
 	    Assert.assertEquals(actual,Expected,"fail:test case");//hard assert
